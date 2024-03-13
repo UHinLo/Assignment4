@@ -64,6 +64,27 @@ int main()
     detector_using->detect(particles.front());
     std::cout<<"--------------------------"<<std::endl;
   }
+
+  // Part 3
+  // Assuming `particles` is a vector of lepton objects and contains at least two electrons
+  lepton sum_of_electrons = particles[0] + particles[1];
+  // Assuming `particles` contains at least two muons, following the two electrons
+  double dot_product_of_muons = particles[2].dot_product(particles[3]);
+  // Assuming there is at least one electron in `particles`
+  lepton new_electron;
+  // Using the assignment operator to copy the first electron
+  new_electron = particles[0];
+  // Assuming there is at least one muon in `particles`, following the electrons
+  // Using the copy constructor to create a new muon from the first one
+  lepton new_muon(particles[2]);
+  // Assuming there is at least one antielectron in `particles`
+  // Move the last particle (assumed to be an antielectron) into a new antielectron object
+  lepton antielectron(std::move(particles[6]));
+  // Create a new lepton object for the new antimuon
+  lepton new_antimuon;
+  // Move assign the antimuon to the new antimuon using the move assignment operator
+  new_antimuon = std::move(particles[7]);
+
   std::cout<<"---End of program---"<<std::endl;
   return 0;
 }
