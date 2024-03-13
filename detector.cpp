@@ -104,3 +104,49 @@ void detector::print_detected() const
 {
   std::cout<<detector_particles_number<<" particles detected"<<std::endl;
 }
+
+// Assignment operator (Copy assignment operator)
+detector& detector::operator=(const detector& other)
+{
+  std::cout<<"Calling Copy Assignment for detector"<<std::endl;
+  if(this != &other)
+  { 
+    // Check for self-assignment
+    detector_type = other.detector_type;
+    status = other.status;
+    detector_particles_number = other.detector_particles_number;
+  }
+  return *this; // Return a reference to this object
+}
+
+// Copy Constructor
+detector::detector(const detector& other):
+  detector_type(other.detector_type), status(other.status), detector_particles_number(other.detector_particles_number)
+  {
+    std::cout << "Calling Copy Constructor for detector" << std::endl;
+  }
+
+
+// Move Constructor
+detector::detector(detector&& other) noexcept:
+  detector_type(std::move(other.detector_type)), status(other.status), detector_particles_number(other.detector_particles_number)
+  {
+    std::cout << "Calling Move Constructor for detector" << std::endl;
+    other.status = false; // Example of resetting, adjust based on actual needs
+    other.detector_particles_number = 0;
+  }
+
+// Move Assignment Operator
+detector& detector::operator=(detector&& other) noexcept
+{
+  std::cout << "Calling Move Assignment for detector" << std::endl;
+  if(this != &other)
+  {
+    detector_type = std::move(other.detector_type);
+    status = other.status;
+    detector_particles_number = other.detector_particles_number;
+    other.status = false;
+    other.detector_particles_number = 0;
+  }
+  return *this;
+}
