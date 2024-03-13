@@ -194,6 +194,7 @@ lepton lepton::operator+(const lepton& other) const
 }
 
 // Assignment operator (Copy assignemnt operator)
+// Start a new vector and put four momentum in
 lepton& lepton::operator=(const lepton& other)
 {
   std::cout<<"Calling Copy Assignment for lepton"<<std::endl;
@@ -225,6 +226,7 @@ lepton::lepton(lepton&& other) noexcept:
   }
 
 // Move Assignment Operator
+// Change four momentum (start a new one and replace it)
 lepton& lepton::operator=(lepton&& other) noexcept
 {
   std::cout<<"Calling Move Assignment for lepton"<<std::endl;
