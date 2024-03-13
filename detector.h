@@ -24,6 +24,16 @@ class detector
     int detect(const lepton& particle);
     void print_status() const;
     void print_detected() const;
+
+    // Special member functions
+    // Copy constructor
+    detector(const detector& other);
+    // Assignment operator (Copy assignment operator)
+    detector& operator=(const detector& other);
+    // Move constructor
+    detector(detector&& other) noexcept;
+    // Move assignment operator
+    detector& operator=(detector&& other) noexcept;
 };
 
 #endif
