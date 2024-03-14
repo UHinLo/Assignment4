@@ -180,7 +180,7 @@ void lepton::print_particle_data() const
 double lepton::dot_product(const lepton& other) const
 {
   // Metric signature (1, -1, -1, -1)
-  return (*four_momentum)[0] * other.four_momentum->at(0) - 
+  return (*four_momentum)[0] * other.four_momentum->at(0) -
           ((*four_momentum)[1] * other.four_momentum->at(1) +
           (*four_momentum)[2] * other.four_momentum->at(2) +
           (*four_momentum)[3] * other.four_momentum->at(3));
