@@ -11,10 +11,9 @@ lepton::lepton() : particle_type("Unknown"), rest_mass(0), charge(0), check_part
 lepton::lepton(const std::string& type, double mass, bool particle, double e, double px, double py, double pz):
   particle_type(type), rest_mass(mass), charge((particle) ? -1 : 1), check_particle(particle),four_momentum(new std::vector<double>{e, px, py, pz})
   {
-    // Validation can be added here
     if(e < 0)
     {
-      std::cerr << "Invalid energy value. It has been set to the rest mass energy equivalent." << std::endl;
+      std::cout<<"Invalid energy value. It has been set to the rest mass energy equivalent."<<std::endl;
       e = rest_mass * c;
     }
   }
@@ -35,7 +34,6 @@ void lepton::set_energy(double energy)
   else
   {
     std::cerr<<"Invalid energy value. It must be non-negative. It will be set to rest_mass energy"<<std::endl;
-    // Keep the energy value within valid bounds
     (*four_momentum)[0] = rest_mass * c;
   }
 }
@@ -49,8 +47,7 @@ void lepton::set_momentum_px(double px)
   }
   else
   {
-    std::cerr<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
-    // Keep the energy value within valid bounds
+    std::cout<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
     (*four_momentum)[0] = rest_mass * c;
   }
 }
@@ -64,8 +61,7 @@ void lepton::set_momentum_py(double py)
   }
   else
   {
-    std::cerr<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
-    // Keep the energy value within valid bounds
+    std::cout<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
     (*four_momentum)[0] = rest_mass * c;
   }
 }
@@ -79,8 +75,7 @@ void lepton::set_momentum_pz(double pz)
   }
   else
   {
-    std::cerr<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
-    // Keep the energy value within valid bounds
+    std::cout<<"Invalid energy value. It must be non-negative and less than the rest mass energy equivalent."<<std::endl;
     (*four_momentum)[0] = rest_mass * c;
   }
 }
@@ -184,7 +179,7 @@ void lepton::print_particle_data() const
 // Dot product member function
 double lepton::dot_product(const lepton& other) const
 {
-  // Assuming metric signature (1, -1, -1, -1)
+  // Metric signature (1, -1, -1, -1)
   return (*four_momentum)[0] * other.four_momentum->at(0) - 
           ((*four_momentum)[1] * other.four_momentum->at(1) +
           (*four_momentum)[2] * other.four_momentum->at(2) +
@@ -201,13 +196,11 @@ lepton lepton::operator+(const lepton& other) const
 }
 
 // Assignment operator (Copy assignemnt operator)
-// Start a new vector and put four momentum in
 lepton& lepton::operator=(const lepton& other)
 {
-  std::cout<<"Calling Copy Assignment for lepton"<<std::endl;
+  std::cout<<"Calling Copy Assignment"<<std::endl;
   if(this != &other)
-  { 
-    // Check for self-assignment
+  {
     particle_type = other.particle_type;
     rest_mass = other.rest_mass;
     charge = other.charge;
@@ -219,26 +212,25 @@ lepton& lepton::operator=(const lepton& other)
   return *this;
 }
 
-// Copy Constructor - Modify to add print statement
+// Copy Constructor
 lepton::lepton(const lepton& other):
   particle_type(other.particle_type), rest_mass(other.rest_mass), charge(other.charge), check_particle(other.check_particle), four_momentum(new std::vector<double>(*other.four_momentum))
   {
-    std::cout<<"Calling Copy Constructor for lepton"<<std::endl;
+    std::cout<<"Calling Copy Constructor"<<std::endl;
   }
 
 // Move Constructor
 lepton::lepton(lepton&& other) noexcept:
   particle_type(std::move(other.particle_type)), rest_mass(other.rest_mass), charge(other.charge), check_particle(other.check_particle), four_momentum(other.four_momentum)
   {
-    std::cout<<"Calling Move Constructor for lepton"<<std::endl;
+    std::cout<<"Calling Move Constructor"<<std::endl;
     other.four_momentum = nullptr;
   }
 
 // Move Assignment Operator
-// Change four momentum (start a new one and replace it)
 lepton& lepton::operator=(lepton&& other) noexcept
 {
-  std::cout<<"Calling Move Assignment for lepton"<<std::endl;
+  std::cout<<"Calling Move Assignment"<<std::endl;
   if(this != &other)
   {
     delete four_momentum;
