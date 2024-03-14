@@ -10,7 +10,7 @@ class lepton
     double rest_mass;
     int charge;
     bool check_particle;
-    // Pointer to a dynamically allocated vector for four-momentum components (E, px, py, pz)
+    // Pointer to a dynamically allocated vector for four-momentum (E/c, px, py, pz)
     std::vector<double>* four_momentum;
     static constexpr double c = 2.99792458e8;
     static constexpr double c_squared = c * c;
