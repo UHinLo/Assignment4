@@ -8,7 +8,6 @@ lepton::lepton() : particle_type("Unknown"), rest_mass(0), charge(0), check_part
 {
 }
 // Parameterized constructor
-// change how e is caluclated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 lepton::lepton(const std::string& type, double mass, bool particle, double e, double px, double py, double pz):
   particle_type(type), rest_mass(mass), charge((particle) ? -1 : 1), check_particle(particle),four_momentum(new std::vector<double>{e, px, py, pz})
   {
