@@ -168,12 +168,20 @@ int lepton::get_charge() const
 // Print particle data
 void lepton::print_particle_data() const
 {
-  std::cout<<"-------------"<<std::endl;
-  std::cout<<"Particle type: "<<particle_type<<" "<<(check_particle ? "particle" : "antiparticle")<<" | ";
-  std::cout<<"Rest mass (MeV): "<<rest_mass<<" | "<<"Charge: "<<charge<<" | ";
-  std::cout<<"Four-momentum (MeV/c): ("<<(*four_momentum)[0]<<", "<<(*four_momentum)[1]<<", "<<(*four_momentum)[2]<<", "<<(*four_momentum)[3]<<")"<<std::endl;
-  std::cout<<"-------------"<<std::endl;
+  if(four_momentum != nullptr)
+  {
+    std::cout<<"-------------"<<std::endl;
+    std::cout<<"Particle type: "<<particle_type<<" "<<(check_particle ? "particle" : "antiparticle")<<" | ";
+    std::cout<<"Rest mass (MeV): "<<rest_mass<<" | "<<"Charge: "<<charge<<" | ";
+    std::cout<<"Four-momentum (MeV/c): ("<<(*four_momentum)[0]<<", "<<(*four_momentum)[1]<<", "<<(*four_momentum)[2]<<", "<<(*four_momentum)[3]<<")"<<std::endl;
+    std::cout<<"-------------"<<std::endl;
+  }
+  else
+  {
+    std::cout<<"The particle has been moved from and its data no longer exists."<<std::endl;
+  }
 }
+
 // Dot product member function
 double lepton::dot_product(const lepton& other) const
 {
@@ -205,7 +213,9 @@ lepton& lepton::operator=(const lepton& other)
     rest_mass = other.rest_mass;
     charge = other.charge;
     check_particle = other.check_particle;
-    *four_momentum = *other.four_momentum;
+    std::vector<double>* new_four_momentum = new std::vector<double>(*other.four_momentum);
+    delete four_momentum;
+    four_momentum = new_four_momentum;
   }
   return *this;
 }
