@@ -9,8 +9,12 @@ lepton::lepton() : particle_type("Unknown"), rest_mass(0), charge(0), check_part
 }
 // Parameterized constructor
 lepton::lepton(const std::string& type, double mass, bool particle, double e, double px, double py, double pz):
-  particle_type(type), rest_mass(mass), charge((particle) ? -1 : 1), check_particle(particle),four_momentum(new std::vector<double>{e, px, py, pz})
+  particle_type(type), rest_mass(mass), charge((particle) ? -1 : 1), check_particle(particle),four_momentum(new std::vector<double>)
   {
+    four_momentum->push_back(e/c);
+    four_momentum->push_back(px);
+    four_momentum->push_back(py);
+    four_momentum->push_back(pz);
     if(e < 0)
     {
       std::cout<<"Invalid energy value. It has been set to the rest mass energy equivalent."<<std::endl;
@@ -29,21 +33,29 @@ void lepton::set_energy(double energy)
 {
   if(energy >= 0)
   {
-    (*four_momentum)[0] = energy;
+    (*four_momentum)[0] = energy/c;
+    std::cout<<"Energy now set to ";
+    std::cout<<(*four_momentum)[0]*c<<" MeV"<<std::endl;
   }
   else
   {
-    std::cerr<<"Invalid energy value. It must be non-negative. It will be set to rest_mass energy"<<std::endl;
+    std::cout<<"Invalid energy value. It must be non-negative. It will be set to rest_mass energy"<<std::endl;
     (*four_momentum)[0] = rest_mass * c;
   }
 }
 void lepton::set_momentum_px(double px)
 {
   (*four_momentum)[1] = px;
-  double new_energy = sqrt(rest_mass * rest_mass + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3]));
+  std::cout<<"Momentum px now set to ";
+  std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[1];
+  std::cout<<" MeV/c"<<std::endl;
+  double new_energy = sqrt(rest_mass*rest_mass*c_squared*c_squared  + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3])*c_squared);
   if(new_energy >= 0)
   {
-    (*four_momentum)[0] = new_energy;
+    (*four_momentum)[0] = new_energy/c;
+    std::cout<<"Energy now set to ";
+    std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[0]*c;
+    std::cout<<" MeV"<<std::endl;
   }
   else
   {
@@ -54,10 +66,16 @@ void lepton::set_momentum_px(double px)
 void lepton::set_momentum_py(double py)
 {
   (*four_momentum)[2] = py;
-  double new_energy = sqrt(rest_mass * rest_mass + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3]));
+  std::cout<<"Momentum py now set to ";
+  std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[2];
+  std::cout<<" MeV/c"<<std::endl;
+  double new_energy = sqrt(rest_mass*rest_mass*c_squared*c_squared  + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3])*c_squared);
   if(new_energy >= 0)
   {
-    (*four_momentum)[0] = new_energy;
+    (*four_momentum)[0] = new_energy/c;
+    std::cout<<"Energy now set to ";
+    std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[0]*c;
+    std::cout<<" MeV"<<std::endl;
   }
   else
   {
@@ -68,10 +86,16 @@ void lepton::set_momentum_py(double py)
 void lepton::set_momentum_pz(double pz)
 {
   (*four_momentum)[3] = pz;
-  double new_energy = sqrt(rest_mass * rest_mass + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3]));
+  std::cout<<"Momentum pz now set to ";
+  std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[3];
+  std::cout<<" MeV/c"<<std::endl;
+  double new_energy = sqrt(rest_mass*rest_mass*c_squared*c_squared  + ((*four_momentum)[1]*(*four_momentum)[1] + (*four_momentum)[1]*(*four_momentum)[2] + (*four_momentum)[1]*(*four_momentum)[3])*c_squared);
   if(new_energy >= 0)
   {
-    (*four_momentum)[0] = new_energy;
+    (*four_momentum)[0] = new_energy/c;
+    std::cout<<"Energy now set to ";
+    std::cout<<std::fixed<<std::setprecision(3)<<(*four_momentum)[0]*c;
+    std::cout<<" MeV"<<std::endl;
   }
   else
   {
@@ -139,8 +163,9 @@ bool lepton::get_check_particle() const
 {
   return check_particle;
 }
-double lepton::get_energy() const {
-    return (*four_momentum)[0];
+double lepton::get_energy() const
+{
+  return (*four_momentum)[0];
 }
 double lepton::get_momentum_px() const
 {
@@ -166,8 +191,8 @@ void lepton::print_particle_data() const
   {
     std::cout<<"-------------"<<std::endl;
     std::cout<<"Particle type: "<<particle_type<<" "<<(check_particle ? "particle" : "antiparticle")<<" | ";
-    std::cout<<"Rest mass (MeV): "<<rest_mass<<" | "<<"Charge: "<<charge<<" | ";
-    std::cout<<"Four-momentum (MeV/c): ("<<(*four_momentum)[0]<<", "<<(*four_momentum)[1]<<", "<<(*four_momentum)[2]<<", "<<(*four_momentum)[3]<<")"<<std::endl;
+    std::cout<<"Rest mass (MeV/c^2): "<<rest_mass<<" | "<<"Charge: "<<charge<<" | ";
+    std::cout<<"Four-momentum: ("<<(*four_momentum)[0]<<", "<<(*four_momentum)[1]<<", "<<(*four_momentum)[2]<<", "<<(*four_momentum)[3]<<")"<<std::endl;
     std::cout<<"-------------"<<std::endl;
   }
   else
@@ -188,8 +213,8 @@ double lepton::dot_product(const lepton& other) const
 // Overloaded sum operator
 lepton lepton::operator+(const lepton& other) const
 {
-  return lepton(particle_type, rest_mass, check_particle, 
-            (*four_momentum)[0] + other.four_momentum->at(0),
+  return lepton("Unknown", 0, check_particle,
+            ((*four_momentum)[0] + other.four_momentum->at(0))*c,
             (*four_momentum)[1] + other.four_momentum->at(1),
             (*four_momentum)[2] + other.four_momentum->at(2),
             (*four_momentum)[3] + other.four_momentum->at(3));
