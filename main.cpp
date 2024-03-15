@@ -26,7 +26,7 @@ int main()
 
   // Emplace back particle objects directly into the vector
   // Two electrons, four muons, one antielectron, one antimuon
-  particles.emplace_back("electron", 0.511, true, 5, 1, 1, 1);
+  particles.emplace_back("electron", 0.511, true, random_number(), random_number(), random_number(), random_number());
   particles.emplace_back("electron", 0.511, true, random_number(), random_number(), random_number(), random_number());
   particles.emplace_back("muon", 105.658, true, random_number(), random_number(), random_number(), random_number());
   particles.emplace_back("muon", 105.658, true, random_number(), random_number(), random_number(), random_number());
@@ -43,6 +43,7 @@ int main()
 
 
   // Part 3
+  // Sum
   std::cout<<"---"<<std::endl;
   lepton sum_of_electrons = particles[0] + particles[1];
   std::cout<<"Sum of electrons' four momentum: ( "<<sum_of_electrons.get_energy();
@@ -69,8 +70,8 @@ int main()
 
   // Move the old antielectron into a new antielectron object using the move constructor
   std::cout<<"---"<<std::endl;
-  lepton antielectron(std::move(particles[6]));
-  antielectron.print_particle_data();
+  lepton new_antielectron(std::move(particles[6]));
+  new_antielectron.print_particle_data();
   particles[6].print_particle_data();
   std::cout<<"---"<<std::endl;
 
