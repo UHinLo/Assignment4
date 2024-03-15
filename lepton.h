@@ -20,22 +20,20 @@ class lepton
     lepton(const std::string& type, double mass, bool particle, double energy, double px, double py, double pz);
     ~lepton();
 
-    // Setters for four-momentum using a vector
+    // Setters
     void set_energy(double e);
     void set_momentum_px(double px);
     void set_momentum_py(double py);
     void set_momentum_pz(double pz);
-
-    // Getters for four-momentum components
-    double get_energy() const;
-    double get_momentum_px() const;
-    double get_momentum_py() const;
-    double get_momentum_pz() const;
-
     void set_particle_type(const std::string& type);
     void set_rest_mass(double mass);
     void set_check_particle(bool particle);
     void set_charge(int c);
+    // Getters
+    double get_energy() const;
+    double get_momentum_px() const;
+    double get_momentum_py() const;
+    double get_momentum_pz() const;
     std::string get_particle_type() const;
     double get_rest_mass() const;
     bool get_check_particle() const;
